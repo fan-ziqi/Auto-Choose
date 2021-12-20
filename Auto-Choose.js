@@ -1,7 +1,7 @@
 /*
 	@Author  77
 	@Date    2021-06-06
-	@GitHub  https://github.com/fan-ziq
+	@GitHub  https://github.com/fan-ziqi
 */
 var choose = 1;//修改此处来选择评哪个选项，数值1-5对应五个选项
 var pingyu = "非常满意";//修改此处来填写评语
