@@ -3,7 +3,7 @@
 	@Date    2021-06-06
 	@GitHub  https://github.com/fan-ziqi
 */
-var choose = 1;//修改此处来选择评哪个选项，数值1-5对应五个选项
+var choose = 1;//修改此处来选择评哪个选项，数值1-5对应五个选项,对于2021年的评教,1为非常满意
 var pingyu = "非常满意";//修改此处来填写评语
 console.log("将全部选择第%d个选项",choose);
 console.log("将填写评语%o",pingyu);
