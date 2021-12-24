@@ -1,11 +1,19 @@
 /*
-    @Author  77
-    @Date    2021-06-06
-    @GitHub  https://github.com/fan-ziqi
+    @Author  coyote
+    @Date    2021-12-24
+    @GitHub  https://github.com/typenoob
 */
-var choose = 1; //修改此处来选择评哪个选项，数值1-5对应五个选项,对于2021年的评教,1为非常满意
-document.querySelectorAll('[data-dyf="' + String(6 - choose) + '"]').forEach(function (t) { t.click(); });
 
-console.log("将全部选择第%d个选项", choose);
-console.log("本位老师评选成功！请手动点击页面下方的提交选项。");
-console.log("@Author  77\n@Date    2021-06-06\n@GitHub  https://github.com/fan-ziqi\n");
+
+chart=document.querySelector("#tempGrid").children[0].children
+for(let k=1;k<chart.length;k++){
+    setTimeout(function(){chart[k].click()},k*2000)  
+    setTimeout(function(){a=document.getElementsByClassName('radio-inline')},k*2000+1000)
+    for(let i=0;i<40;i++)
+        setTimeout(function(){if(a[i].innerText=='非常满意 ') a[i].children[0].firstElementChild.click()},k*2000+1150)
+    setTimeout(function(){document.querySelector("#btn_xspj_tj").click()},k*2000+1160)
+    setTimeout(function(){document.querySelector("#btn_ok").click()},k*2000+1500)
+}
+
+
+console.log("successful!");
