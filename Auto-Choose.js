@@ -1,20 +1,49 @@
 /*
     @Author  coyote
-    @Date    2022-5-17
+    @Date    2023-06-05
     @GitHub  https://github.com/typenoob
 */
 
 
-chart=document.querySelector("#tempGrid").children[0].children
-for(let k=1;k<chart.length;k++){
-    setTimeout(function(){chart[k].click()},k*3000)  
-    setTimeout(function(){a=document.getElementsByClassName('radio-inline')},k*3000+1000)
-    for(let i=0;i<40;i++)
-   setTimeout(function(){if(a[i].innerText=='非常满意 ') a[i].children[0].firstElementChild.click()},k*3000+1150)
-   setTimeout(function(){document.querySelector("#btn_xspj_tj").dispatchEvent( new Event( 'mouseover' ) )},k*3000+1160)
-   setTimeout(function(){document.querySelector("#btn_xspj_tj").click()},k*3000+1360)
-   setTimeout(function(){document.querySelector("#btn_ok").click()},k*3000+1500)
+function waitForElm(selector, wait = 3000) {
+	return new Promise((resolve, reject) => {
+		if (document.querySelector(selector)) {
+			return resolve(document.querySelector(selector));
+		}
+		const timeout = setTimeout(
+			() => {
+				observer.disconnect();
+				reject(` ${selector} 元素未找到`);
+			},
+			wait
+		);
+		const observer = new MutationObserver(_ => {
+			if (document.querySelector(selector)) {
+				resolve(document.querySelector(selector));
+				clearTimeout(timeout);
+				observer.disconnect();
+			}
+		});
+		observer.observe(document.body, {
+			childList: true,
+			subtree: true
+		});
+	});
 }
-
-
-console.log("successful!");
+new Promise(async (resolve, reject) => {
+	const charts = Array.from(document.querySelector("#tempGrid").children[0].children);
+	charts.shift();
+	for await (const chart of charts) {
+		chart.click();
+		const radioButtons = await waitForElm('.radio-inline').catch(err => reject(err));
+		for await (const i of [...Array(40).keys()]) {
+			if (radioButtons[i].innerText == '非常满意 ') radioButtons[i].children[0].firstElementChild.click();
+		};
+		const tjBtn = await waitForElm('#btn_xspj_tj').catch(err => reject(err));
+		tjBtn.dispatchEvent(new Event('mouseover'));
+		tjBtn.click();
+		const okBtn = await waitForElm('#btn_ok').catch(err => reject(err));
+		okBtn.click();
+	}
+	resolve(true);
+}).then((_) => alert('success!')).catch(err => alert(`error: ${err}`));
